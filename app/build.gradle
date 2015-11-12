@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.dpivovar.runtracker"
-        minSdkVersion 8
+        minSdkVersion 19
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -15,6 +15,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        debug {
+            manifest.srcFile 'src/debug/AndroidManifest.xml'
         }
     }
 }
