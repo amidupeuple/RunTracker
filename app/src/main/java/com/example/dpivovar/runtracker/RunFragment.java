@@ -11,7 +11,10 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +30,7 @@ public class RunFragment extends Fragment {
     private static final String TAG = "RunFragment";
     private static final String ARG_RUN_ID = "RUN_ID";
     private static final int RUN_TRACKER_NOTIFICATION_ID = 1;
+    private static final int LOAD_RUN = 0;
 
     private Button mStartButton, mStopButton;
     private TextView mStartedTextView, mLatitudeTextView, mLongitudeTextView, mAltitudeTextView,
@@ -67,7 +71,8 @@ public class RunFragment extends Fragment {
         if (args != null) {
             long runId = args.getLong(ARG_RUN_ID, -1);
             if (runId != -1) {
-                mRun = mRunManager.getRun(runId);
+                LoaderManager lm = getLoaderManager();
+                lm.initLoader(LOAD_RUN, args, new RunLoaderCallbacks());
                 mLastLocation = mRunManager.getLastLocationForRun(runId);
             }
         }
@@ -134,6 +139,7 @@ public class RunFragment extends Fragment {
     }
 
     private void updateUI() {
+        Log.d(TAG, "updateUI in tread: " + Thread.currentThread().getName());
         boolean started = mRunManager.isTrackingRun();
         boolean trackingRhisRun = mRunManager.isTrackingRun(mRun);
 
@@ -172,5 +178,24 @@ public class RunFragment extends Fragment {
         RunFragment rf = new RunFragment();
         rf.setArguments(args);
         return rf;
+    }
+
+    private class RunLoaderCallbacks implements LoaderCallbacks<Run> {
+
+        @Override
+        public Loader<Run> onCreateLoader(int id, Bundle args) {
+            return new RunLoader(getActivity(), args.getLong(ARG_RUN_ID));
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Run> loader, Run data) {
+            mRun = data;
+            updateUI();
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Run> loader) {
+            //
+        }
     }
 }
