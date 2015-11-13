@@ -1,12 +1,17 @@
 package com.example.dpivovar.runtracker;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +26,7 @@ import android.widget.Toast;
 public class RunFragment extends Fragment {
     private static final String TAG = "RunFragment";
     private static final String ARG_RUN_ID = "RUN_ID";
+    private static final int RUN_TRACKER_NOTIFICATION_ID = 1;
 
     private Button mStartButton, mStopButton;
     private TextView mStartedTextView, mLatitudeTextView, mLongitudeTextView, mAltitudeTextView,
@@ -52,6 +58,7 @@ public class RunFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "+ start onCreate() -> RunFragment");
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         mRunManager = RunManager.get(getActivity());
@@ -68,6 +75,7 @@ public class RunFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "+ start onCreateView() -> RunFragment");
         View view = inflater.inflate(R.layout.fragment_run, container, false);
 
         mStartedTextView = (TextView)view.findViewById(R.id.run_startedTextView);
@@ -86,6 +94,24 @@ public class RunFragment extends Fragment {
                     mRunManager.startTrackingRun(mRun);
                 }
                 updateUI();
+
+                //Create notification
+                NotificationCompat.Builder builder =
+                        new NotificationCompat.Builder(getActivity())
+                        .setSmallIcon(R.drawable.notification_template_icon_bg)
+                        .setContentTitle("RunTracker notification")
+                        .setContentTitle("Run " + mRun.getId() + " is tracking");
+                Intent resultIntent = new Intent(getActivity(), RunActivity.class);
+                resultIntent.putExtra(RunActivity.EXTRA_RUN_ID, mRun.getId());
+
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(getActivity());
+                stackBuilder.addParentStack(RunActivity.class);
+                stackBuilder.addNextIntent(resultIntent);
+                PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
+                                                                                  PendingIntent.FLAG_UPDATE_CURRENT);
+                builder.setContentIntent(resultPendingIntent);
+                NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(RUN_TRACKER_NOTIFICATION_ID, builder.build());
             }
         });
 
@@ -96,9 +122,13 @@ public class RunFragment extends Fragment {
                 Log.d(TAG, "STOP button pressed");
                 mRunManager.stopRun();
                 updateUI();
+
+                NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(RUN_TRACKER_NOTIFICATION_ID);
             }
         });
 
+        updateUI();
 
         return view;
     }

@@ -14,8 +14,8 @@ import android.util.Log;
 public class RunManager {
     private static final String TAG = "RunManager";
 
-    private static final String PREFS_FILE = "runs";
-    private static final String PREF_CURRENT_RUN_ID = "RunManager.currentRunId";
+    public static final String PREFS_FILE = "runs";
+    public static final String PREF_CURRENT_RUN_ID = "RunManager.currentRunId";
 
     public static final String ACTION_LOCATION = "com.example.dpivovar.runtracker.ACTION_LOCATION";
     public static final String TEST_PROVIDER = "TEST_PROVIDER";
@@ -137,7 +137,10 @@ public class RunManager {
     }
 
     public boolean isTrackingRun() {
-        return getLocationPendingIntent(false) != null;
+        Log.d(TAG, "+ isTrackingRun()");
+        PendingIntent tmp = getLocationPendingIntent(false);
+        Log.d(TAG, "Pending intent is null: " + (tmp == null));
+        return tmp != null;
     }
 
     public Run getRun(long id) {

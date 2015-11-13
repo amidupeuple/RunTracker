@@ -14,7 +14,7 @@ public class RunActivity extends SingleFragmentActivity {
         if (runId != -1) {
             return RunFragment.newInstance(runId);
         } else {
-            return new Fragment();
+            return new RunFragment();
         }
     }
 }
