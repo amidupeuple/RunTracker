@@ -31,6 +31,7 @@ public class RunFragment extends Fragment {
     private static final String ARG_RUN_ID = "RUN_ID";
     private static final int RUN_TRACKER_NOTIFICATION_ID = 1;
     private static final int LOAD_RUN = 0;
+    private static final int LOAD_LAST_LOCATION = 1;
 
     private Button mStartButton, mStopButton;
     private TextView mStartedTextView, mLatitudeTextView, mLongitudeTextView, mAltitudeTextView,
@@ -73,7 +74,7 @@ public class RunFragment extends Fragment {
             if (runId != -1) {
                 LoaderManager lm = getLoaderManager();
                 lm.initLoader(LOAD_RUN, args, new RunLoaderCallbacks());
-                mLastLocation = mRunManager.getLastLocationForRun(runId);
+                lm.initLoader(LOAD_LAST_LOCATION, args, new LocationLoaderCallbacks());
             }
         }
     }
@@ -198,4 +199,23 @@ public class RunFragment extends Fragment {
             //
         }
     }
+
+    private class LocationLoaderCallbacks implements LoaderCallbacks<Location> {
+        @Override
+        public Loader<Location> onCreateLoader(int id, Bundle args) {
+            return new LastLocationLoader(getActivity(), args.getLong(ARG_RUN_ID));
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Location> loader, Location data) {
+            mLastLocation = data;
+            updateUI();
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Location> loader) {
+            //
+        }
+    }
+
 }
