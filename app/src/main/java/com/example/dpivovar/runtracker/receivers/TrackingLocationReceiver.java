@@ -1,8 +1,10 @@
-package com.example.dpivovar.runtracker;
+package com.example.dpivovar.runtracker.receivers;
 
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
+
+import com.example.dpivovar.runtracker.services.RunManager;
 
 /**
  * Created by dpivovar on 11.11.2015.

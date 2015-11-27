@@ -1,4 +1,4 @@
-package com.example.dpivovar.runtracker;
+package com.example.dpivovar.runtracker.loaders;
 
 import android.content.Context;
 import android.database.Cursor;

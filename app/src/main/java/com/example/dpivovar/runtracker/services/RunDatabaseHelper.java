@@ -1,4 +1,4 @@
-package com.example.dpivovar.runtracker;
+package com.example.dpivovar.runtracker.services;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
+
+import com.example.dpivovar.runtracker.objects.Run;
 
 import java.util.Date;
 
@@ -135,6 +137,17 @@ public class RunDatabaseHelper extends SQLiteOpenHelper {
 
             return loc;
         }
+    }
+
+    public LocationCursor queryLocationsForRun(long runId) {
+        Cursor wrapped = getReadableDatabase().query(TABLE_LOCATION,
+                null,
+                COLUMN_LOCATION_RUN_ID + " = ?",
+                new String[]{String.valueOf(runId)},
+                null,
+                null,
+                COLUMN_LOCATION_TIMESTAMP + " asc");
+        return new LocationCursor(wrapped);
     }
 
 }

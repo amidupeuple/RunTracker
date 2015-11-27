@@ -1,4 +1,4 @@
-package com.example.dpivovar.runtracker;
+package com.example.dpivovar.runtracker.fragments;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -23,6 +23,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.dpivovar.runtracker.activities.RunMapActivity;
+import com.example.dpivovar.runtracker.loaders.LastLocationLoader;
+import com.example.dpivovar.runtracker.receivers.LocationReceiver;
+import com.example.dpivovar.runtracker.R;
+import com.example.dpivovar.runtracker.objects.Run;
+import com.example.dpivovar.runtracker.loaders.RunLoader;
+import com.example.dpivovar.runtracker.services.RunManager;
+import com.example.dpivovar.runtracker.activities.RunActivity;
+
 /**
  * Created by dpivovar on 06.11.2015.
  */
@@ -33,7 +42,7 @@ public class RunFragment extends Fragment {
     private static final int LOAD_RUN = 0;
     private static final int LOAD_LAST_LOCATION = 1;
 
-    private Button mStartButton, mStopButton;
+    private Button mStartButton, mStopButton, mMapButton;
     private TextView mStartedTextView, mLatitudeTextView, mLongitudeTextView, mAltitudeTextView,
                      mDurationTextView;
     private RunManager mRunManager;
@@ -134,6 +143,17 @@ public class RunFragment extends Fragment {
             }
         });
 
+        mMapButton = (Button) view.findViewById(R.id.run_mapButton);
+        mMapButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), RunMapActivity.class);
+                i.putExtra(RunMapActivity.EXTRA_RUN_ID, mRun.getId());
+                startActivity(i);
+            }
+        });
+
         updateUI();
 
         return view;
@@ -154,6 +174,9 @@ public class RunFragment extends Fragment {
             mLatitudeTextView.setText(Double.toString(mLastLocation.getLatitude()));
             mLongitudeTextView.setText(Double.toString(mLastLocation.getLongitude()));
             mAltitudeTextView.setText(Double.toString(mLastLocation.getAltitude()));
+            mMapButton.setEnabled(true);
+        } else {
+            mMapButton.setEnabled(false);
         }
         mDurationTextView.setText(Run.formatDuration(durationSeconds));
 

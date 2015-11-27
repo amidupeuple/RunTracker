@@ -1,4 +1,4 @@
-package com.example.dpivovar.runtracker;
+package com.example.dpivovar.runtracker.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

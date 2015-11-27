@@ -1,4 +1,4 @@
-package com.example.dpivovar.runtracker;
+package com.example.dpivovar.runtracker.services;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -7,6 +7,9 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
+
+import com.example.dpivovar.runtracker.services.RunDatabaseHelper.LocationCursor;
+import com.example.dpivovar.runtracker.objects.Run;
 
 /**
  * Created by dpivovar on 06.11.2015.
@@ -171,5 +174,9 @@ public class RunManager {
 
         cursor.close();
         return location;
+    }
+
+    public LocationCursor queryLocationsForRun(long runId) {
+        return mHelper.queryLocationsForRun(runId);
     }
 }

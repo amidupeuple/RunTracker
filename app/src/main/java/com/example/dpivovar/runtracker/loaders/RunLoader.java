@@ -1,7 +1,10 @@
-package com.example.dpivovar.runtracker;
+package com.example.dpivovar.runtracker.loaders;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.example.dpivovar.runtracker.objects.Run;
+import com.example.dpivovar.runtracker.services.RunManager;
 
 /**
  * Created by dpivovar on 13.11.2015.

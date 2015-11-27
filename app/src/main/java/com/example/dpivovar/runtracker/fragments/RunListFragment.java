@@ -1,4 +1,4 @@
-package com.example.dpivovar.runtracker;
+package com.example.dpivovar.runtracker.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +20,13 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import static com.example.dpivovar.runtracker.RunDatabaseHelper.*;
+import com.example.dpivovar.runtracker.R;
+import com.example.dpivovar.runtracker.objects.Run;
+import com.example.dpivovar.runtracker.services.RunManager;
+import com.example.dpivovar.runtracker.loaders.SQLiteCursorLoader;
+import com.example.dpivovar.runtracker.activities.RunActivity;
+
+import static com.example.dpivovar.runtracker.services.RunDatabaseHelper.*;
 
 /**
  * Created by dpivovar on 11.11.2015.

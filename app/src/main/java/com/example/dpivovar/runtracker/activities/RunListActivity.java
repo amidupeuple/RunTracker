@@ -1,6 +1,8 @@
-package com.example.dpivovar.runtracker;
+package com.example.dpivovar.runtracker.activities;
 
 import android.support.v4.app.Fragment;
+
+import com.example.dpivovar.runtracker.fragments.RunListFragment;
 
 /**
  * Created by dpivovar on 11.11.2015.

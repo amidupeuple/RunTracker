@@ -3,12 +3,23 @@
 
     <uses-permission android:name="ANDROID.PERMISSION.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
-    <uses-feature android:required="true" android:name="android.hardware.location.gps"/>
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <permission android:name="com.example.dpivovar.runtracker.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature"/>
+    <uses-permission android:name="com.example.dpivovar.runtracker.permission.MAPS_RECEIVE"/>
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="ANDROID.PERMISSION.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="ANDROID.PERMISSION.ACCESS_COARSE_LOCATION"/>
+
+    <uses-feature android:required="true" android:name="android.hardware.location.gps"/>
+    <uses-feature android:required="true" android:glEsVersion="0x00020000"/>
+
     <application android:allowBackup="true" android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher">
-        <activity android:name=".RunListActivity"
+        <activity android:name=".activities.RunListActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -16,13 +27,20 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".RunActivity" android:label="@string/app_name"/>
+        <activity android:name=".activities.RunActivity" android:label="@string/app_name"/>
 
-        <receiver android:name=".TrackingLocationReceiver" android:exported="false">
+        <activity android:name=".activities.RunMapActivity" android:label="@string/app_name"/>
+
+        <receiver android:name=".receivers.TrackingLocationReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="com.example.dpivovar.runtracker.ACTION_LOCATION"/>
             </intent-filter>
         </receiver>
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDD9Ttum1xe4QzAh6HiNhoOuWXarMS5Q54"/>
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
     </application>
 
